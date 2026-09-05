@@ -1,0 +1,33 @@
+{
+  "name": "graph-note",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.18.0+sha512.33d83c77da82f49fba836925c6f1b841181ec3132b670639bd012f7075f5c7cf634c5f870147c19aae7478fac01df09d8892e880454896edd23ee9b33757563c",
+  "engines": {
+    "node": ">=24.0.0 <25.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run build"
+  },
+  "dependencies": {
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.4",
+    "prettier": "^3",
+    "typescript": "^5"
+  }
+}
