@@ -107,6 +107,7 @@ removeEdgesForNote(edges: Edge[], noteId: NoteId): Edge[] // ノート削除時�
 を新規作成し記録する。実装もこの順で1機能=1トピックブランチ=1PRで進める。
 
 **Feature 001: ノートCRUD**
+
 - Scope: 上記ドメイン関数(create/update/delete)+ 最小UI(ノート一覧、
   新規作成フォーム、選択中ノートの編集フォーム、削除ボタン)
 - Out of scope: リンク/グラフ表示(Feature 002)、Markdown、永続化
@@ -116,6 +117,7 @@ removeEdgesForNote(edges: Edge[], noteId: NoteId): Edge[] // ノート削除時�
   正常系)をカバー
 
 **Feature 002: グラフ表示とリンク**
+
 - Scope: `src/lib/edges.ts` の実装(create/delete/カスケード削除)。
   `@xyflow/react` を**素のデフォルト機能のみ**で使う薄いラッパーで、各ノートを
   デフォルトノード型として描画し、各Edgeをデフォルトエッジ型として描画する。
