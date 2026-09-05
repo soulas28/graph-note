@@ -54,7 +54,7 @@ Depends on: [Feature 001: ノートCRUD](001-note-crud.md)
 
 ## Verification
 
-- `src/lib/edges.test.ts`(Vitest)で `createEdge`(自己ループ拒否・正常系・
+- `tests/lib/edges.test.ts`(Vitest)で `createEdge`(自己ループ拒否・正常系・
   同一無向ペアへの重複作成が拒否されること)、`deleteEdge`、
   `removeEdgesForNote`(カスケード)を検証する
 - `pnpm run verify` が通ること

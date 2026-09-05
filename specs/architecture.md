@@ -15,9 +15,11 @@
   Prettier (default config), aggregated via `pnpm run verify`
   (typecheck && lint && format:check && test && build).
 - Test runner: Vitest, scoped to domain/logic modules under `src/lib/`
-  (pure functions, no React/DOM). Test files are colocated with their
-  source as `*.test.ts`. UI component testing (React Testing Library) and
-  e2e (Playwright) are not introduced yet.
+  (pure functions, no React/DOM). Test files live under a top-level
+  `tests/` directory mirroring the `src/` layout (e.g. `src/lib/notes.ts`
+  → `tests/lib/notes.test.ts`), not colocated with source. UI component
+  testing (React Testing Library) and e2e (Playwright) are not introduced
+  yet.
 - CI: GitHub Actions, single job, triggered on `pull_request`. Runs the
   exact same command as local development
   (`docker compose build && docker compose run --rm web pnpm run verify`) —

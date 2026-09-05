@@ -35,6 +35,6 @@ Phase: [Phase 1](../../docs/plan/phase-1-graph-notes.md)
 
 ## Verification
 
-- `src/lib/notes.test.ts`(Vitest)で `createNote`/`updateNote`/`deleteNote` の
+- `tests/lib/notes.test.ts`(Vitest)で `createNote`/`updateNote`/`deleteNote` の
   正常系、および存在しないidに対する呼び出しが no-op になることを検証する
 - `pnpm run verify` が通ること
