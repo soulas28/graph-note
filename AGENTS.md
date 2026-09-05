@@ -50,3 +50,6 @@ Stop and report if:
   (infra/tooling/bootstrap), `fix/*` (bug fixes).
 - One topic branch per completed unit of work, merged into `main` via PR.
 - Agent responsibility ends at opening the PR. Do not merge PRs.
+- PR title and body must be written in Japanese. Commit messages may keep
+  the conventional-commit prefix (e.g. `chore:`, `feat:`, `fix:`) in
+  English, but the descriptive text should be Japanese.
