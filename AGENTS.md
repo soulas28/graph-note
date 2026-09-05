@@ -53,3 +53,6 @@ Stop and report if:
 - PR title and body must be written in Japanese. Commit messages may keep
   the conventional-commit prefix (e.g. `chore:`, `feat:`, `fix:`) in
   English, but the descriptive text should be Japanese.
+- Deleting a remote branch changes shared repository state. Before doing
+  so, confirm the branch is fully merged and has no unmerged work, then
+  ask the user for explicit confirmation before deleting it.
