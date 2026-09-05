@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker compose build
+      - name: Verify
+        run: docker compose run --rm web pnpm run verify
