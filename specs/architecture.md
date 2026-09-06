@@ -18,13 +18,25 @@
   (pure functions, no React/DOM). Test files live under a top-level
   `tests/` directory mirroring the `src/` layout (e.g. `src/lib/notes.ts`
   → `tests/lib/notes.test.ts`), not colocated with source. UI component
-  testing (React Testing Library) and e2e (Playwright) are not introduced
-  yet.
+  testing (React Testing Library) is not introduced yet.
+- E2E: Playwright (`@playwright/test`), test files under `tests/e2e/*.spec.ts`
+  (kept separate from Vitest's `tests/lib/*.test.ts` by directory and
+  extension so each runner only picks up its own files). Playwright does
+  not start the app itself (no `webServer` config) — Docker remains the
+  sole way the app is run; `pnpm run test:e2e` assumes `docker compose up`
+  is already running. `pnpm run verify` intentionally does not include
+  e2e, to keep it fast and to keep the app's own Docker image free of
+  browser dependencies. In CI, e2e runs as its own job using the official
+  `mcr.microsoft.com/playwright` image (pinned to the same version as
+  `@playwright/test`) as an external client hitting the already-running
+  app over `--network host` — it is a test client, not another way of
+  running the app.
 - CI: GitHub Actions, triggered on `pull_request`. Jobs are added
   incrementally, one focused concern per job (currently: `verify`, which
   runs the exact same command as local development —
   `docker compose build && docker compose run --rm web pnpm run verify`,
-  no separate CI-only verification logic; and `secrets-scan`). No deploy/CD.
+  no separate CI-only verification logic; `secrets-scan`; and `e2e`). No
+  deploy/CD.
 - DevSecOps: dependency vulnerability audit (`pnpm audit --audit-level=high`)
   is part of `pnpm run verify` itself (not a separate CI-only step, for the
   same reason `verify` is a single canonical command). Dependabot
@@ -59,8 +71,8 @@
 - Edge metadata (label, type, weight, etc.) — the `Edge` type is designed
   to allow this later, but nothing beyond `{ id, source, target }` is
   implemented yet.
-- UI component testing (React Testing Library) and e2e testing
-  (Playwright) — introduce when a feature's UI behavior is complex enough
-  to warrant it.
+- UI component testing (React Testing Library) — introduce when a
+  feature's UI behavior is complex enough to warrant it (e2e/Playwright is
+  now introduced, see Current Decisions).
 - Static analysis / SAST (e.g. CodeQL) — deferred until the project size
   warrants it.

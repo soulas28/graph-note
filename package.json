@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "audit": "pnpm audit --audit-level=high",
     "verify": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test && pnpm run audit && pnpm run build"
   },
@@ -25,6 +26,7 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.13.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
