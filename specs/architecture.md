@@ -20,10 +20,18 @@
   → `tests/lib/notes.test.ts`), not colocated with source. UI component
   testing (React Testing Library) and e2e (Playwright) are not introduced
   yet.
-- CI: GitHub Actions, single job, triggered on `pull_request`. Runs the
-  exact same command as local development
-  (`docker compose build && docker compose run --rm web pnpm run verify`) —
-  no separate CI-only verification logic. No deploy/CD.
+- CI: GitHub Actions, triggered on `pull_request`. Jobs are added
+  incrementally, one focused concern per job (currently: `verify`, which
+  runs the exact same command as local development —
+  `docker compose build && docker compose run --rm web pnpm run verify`,
+  no separate CI-only verification logic; and `secrets-scan`). No deploy/CD.
+- DevSecOps: dependency vulnerability audit (`pnpm audit --audit-level=high`)
+  is part of `pnpm run verify` itself (not a separate CI-only step, for the
+  same reason `verify` is a single canonical command). Dependabot
+  (`.github/dependabot.yml`) keeps npm/pnpm, Docker base image, and GitHub
+  Actions dependencies updated. Gitleaks scans for committed secrets on
+  every PR via the `secrets-scan` CI job. Static analysis (e.g. CodeQL) is
+  deferred — not warranted at the current project size.
 - Graph data model: notes (nodes) and their relationships (edges) are
   separate entities — a `Note` does not embed relationship data. This
   keeps `src/lib/notes.ts` free of any edge/graph awareness and leaves
@@ -54,3 +62,5 @@
 - UI component testing (React Testing Library) and e2e testing
   (Playwright) — introduce when a feature's UI behavior is complex enough
   to warrant it.
+- Static analysis / SAST (e.g. CodeQL) — deferred until the project size
+  warrants it.
