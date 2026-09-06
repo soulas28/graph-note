@@ -1,7 +1,7 @@
 # graph-note
 
-Phase 0: repository bootstrap. No product features are implemented yet —
-this is the minimum scaffolding needed to run and verify a Next.js app.
+まず書き、その後に構造化できるメモ環境。ノートをグラフのノードとして
+作成・編集・接続できる。
 
 ## Requirements
 
@@ -25,7 +25,20 @@ docker compose run --rm web pnpm run verify
 ```
 
 This runs, in order: TypeScript type-checking, ESLint, a Prettier format
-check, and a production build.
+check, Vitest (domain logic unit tests), a dependency audit, and a
+production build.
+
+## E2E tests
+
+E2E tests (Playwright) run against an already-running instance of the app
+— they do not start it themselves. Start the app first, then run the
+tests from the host (requires Node.js + pnpm locally, since this drives a
+browser against the app rather than running the app itself):
+
+```bash
+docker compose up -d
+pnpm run test:e2e
+```
 
 ## More context
 
