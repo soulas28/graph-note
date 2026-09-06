@@ -56,3 +56,17 @@ Stop and report if:
 - Deleting a remote branch changes shared repository state. Before doing
   so, confirm the branch is fully merged and has no unmerged work, then
   ask the user for explicit confirmation before deleting it.
+
+## Planning Records
+
+- Every Phase gets a plan recorded at `docs/plan/phase-<N>-<slug>.md`
+  (Context, Recommended Plan, Alternatives Considered, Human Decisions
+  Required, Definition of Done).
+- Every Feature within a Phase gets a spec recorded at
+  `specs/features/<NNN>-<slug>.md` (Goal, Scope, Out of Scope, Domain
+  Rules, Acceptance Criteria, Verification) — this is the same
+  `specs/features/*` referenced in Source of Truth above.
+- Record both before implementation starts on the corresponding
+  Feature(s), not after. Chore-only work (infra/tooling, no user-facing
+  behavior) is recorded in the Phase's `docs/plan/` entry and
+  `specs/architecture.md` instead of a `specs/features/*` file.
