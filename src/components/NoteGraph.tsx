@@ -1,9 +1,10 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   applyNodeChanges,
   Background,
   Controls,
   ReactFlow,
+  useReactFlow,
   type Connection,
   type Edge as FlowEdge,
   type Node,
@@ -18,6 +19,7 @@ type Position = { x: number; y: number };
 type Props = {
   notes: Note[];
   edges: Edge[];
+  selectedId: NoteId | null;
   onNodeClick: (id: NoteId) => void;
   onConnect: (source: NoteId, target: NoteId) => void;
   onEdgesDelete: (edgeIds: string[]) => void;
@@ -34,9 +36,26 @@ function layoutFor(index: number): Position {
   };
 }
 
+// ノート数が変わるたびに、新しいノードも見える範囲になるよう再フィットする。
+// useReactFlow は <ReactFlow> の子孫でしか呼べないため、内側の子コンポーネントに
+// 分離している。
+function FitViewOnCountChange({ count }: { count: number }) {
+  const { fitView } = useReactFlow();
+
+  useEffect(() => {
+    fitView({ duration: 200 });
+    // fitView の参照はレンダリングのたびに変わりうるため、依存配列には
+    // count のみを指定する。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count]);
+
+  return null;
+}
+
 export function NoteGraph({
   notes,
   edges,
+  selectedId,
   onNodeClick,
   onConnect,
   onEdgesDelete,
@@ -55,6 +74,7 @@ export function NoteGraph({
     position: positions[note.id] ?? layoutFor(index),
     data: { label: note.title || "(無題)" },
     deletable: false,
+    selected: note.id === selectedId,
     // react-flowのResizeObserverによる自動計測を待たず、明示的に幅・高さを
     // 与える。width/heightだけでは内部的に「初期化未完了」と判定され続け、
     // ノードのドラッグやハンドルからの接続操作が効かない不具合が実機検証で
@@ -109,8 +129,18 @@ export function NoteGraph({
     [onEdgesDelete],
   );
 
+  if (notes.length === 0) {
+    return (
+      <div style={{ height: "100%", position: "relative" }}>
+        <p className="empty-state-hint">
+          「+ 新規ノート」でノートを作成してください
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ height: 400 }}>
+    <div style={{ height: "100%", overflow: "hidden" }}>
       <ReactFlow
         nodes={nodes}
         edges={flowEdges}
@@ -124,6 +154,7 @@ export function NoteGraph({
       >
         <Background />
         <Controls />
+        <FitViewOnCountChange count={notes.length} />
       </ReactFlow>
     </div>
   );

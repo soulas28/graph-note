@@ -55,26 +55,33 @@ export default function Home() {
 
   return (
     <main>
-      <h1>graph-note</h1>
-      <NoteList
-        notes={notes}
-        selectedId={selectedId}
-        onSelect={setSelectedId}
-        onCreate={handleCreate}
-      />
-      <NoteGraph
-        notes={notes}
-        edges={edges}
-        onNodeClick={setSelectedId}
-        onConnect={handleConnect}
-        onEdgesDelete={handleEdgesDelete}
-      />
-      {selectedNote && (
-        <NoteEditor
-          note={selectedNote}
-          onChange={handleChange}
-          onDelete={handleDelete}
+      <aside className="sidebar">
+        <h1>graph-note</h1>
+        <NoteList
+          notes={notes}
+          selectedId={selectedId}
+          onSelect={setSelectedId}
+          onCreate={handleCreate}
         />
+      </aside>
+      <div className="canvas-area">
+        <NoteGraph
+          notes={notes}
+          edges={edges}
+          selectedId={selectedId}
+          onNodeClick={setSelectedId}
+          onConnect={handleConnect}
+          onEdgesDelete={handleEdgesDelete}
+        />
+      </div>
+      {selectedNote && (
+        <aside className="editor-panel">
+          <NoteEditor
+            note={selectedNote}
+            onChange={handleChange}
+            onDelete={handleDelete}
+          />
+        </aside>
       )}
     </main>
   );

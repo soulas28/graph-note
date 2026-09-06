@@ -20,6 +20,9 @@ export function NoteList({ notes, selectedId, onSelect, onCreate }: Props) {
               type="button"
               onClick={() => onSelect(note.id)}
               aria-current={note.id === selectedId}
+              className={
+                note.id === selectedId ? "note-item--selected" : undefined
+              }
             >
               {note.title || "(無題)"}
             </button>
