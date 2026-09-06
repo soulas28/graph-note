@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { NoteEditor } from "@/components/NoteEditor";
+import { NoteGraph } from "@/components/NoteGraph";
 import { NoteList } from "@/components/NoteList";
 import {
   createNote,
@@ -10,9 +11,16 @@ import {
   type NoteId,
   updateNote,
 } from "@/lib/notes";
+import {
+  createEdge,
+  deleteEdge,
+  type Edge,
+  removeEdgesForNote,
+} from "@/lib/edges";
 
 export default function Home() {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([]);
   const [selectedId, setSelectedId] = useState<NoteId | null>(null);
 
   const selectedNote = notes.find((note) => note.id === selectedId) ?? null;
@@ -31,7 +39,18 @@ export default function Home() {
   function handleDelete() {
     if (!selectedNote) return;
     setNotes(deleteNote(notes, selectedNote.id));
+    setEdges((current) => removeEdgesForNote(current, selectedNote.id));
     setSelectedId(null);
+  }
+
+  function handleConnect(source: NoteId, target: NoteId) {
+    setEdges((current) => createEdge(current, source, target));
+  }
+
+  function handleEdgesDelete(edgeIds: string[]) {
+    setEdges((current) =>
+      edgeIds.reduce((acc, id) => deleteEdge(acc, id), current),
+    );
   }
 
   return (
@@ -42,6 +61,13 @@ export default function Home() {
         selectedId={selectedId}
         onSelect={setSelectedId}
         onCreate={handleCreate}
+      />
+      <NoteGraph
+        notes={notes}
+        edges={edges}
+        onNodeClick={setSelectedId}
+        onConnect={handleConnect}
+        onEdgesDelete={handleEdgesDelete}
       />
       {selectedNote && (
         <NoteEditor
