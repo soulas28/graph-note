@@ -13,17 +13,32 @@
   this project — local host execution is not a documented/supported path.
 - Static verification: TypeScript strict, ESLint (`eslint-config-next`),
   Prettier (default config), aggregated via `pnpm run verify`
-  (typecheck && lint && format:check && build).
-- No DB / auth / AI SDK / CSS framework / state management library in
-  Phase 0.
+  (typecheck && lint && format:check && test && build).
+- Test runner: Vitest, scoped to domain/logic modules under `src/lib/`
+  (pure functions, no React/DOM). Test files live under a top-level
+  `tests/` directory mirroring the `src/` layout (e.g. `src/lib/notes.ts`
+  → `tests/lib/notes.test.ts`), not colocated with source. UI component
+  testing (React Testing Library) and e2e (Playwright) are not introduced
+  yet.
+- CI: GitHub Actions, single job, triggered on `pull_request`. Runs the
+  exact same command as local development
+  (`docker compose build && docker compose run --rm web pnpm run verify`) —
+  no separate CI-only verification logic. No deploy/CD.
+- Graph data model: notes (nodes) and their relationships (edges) are
+  separate entities — a `Note` does not embed relationship data. This
+  keeps `src/lib/notes.ts` free of any edge/graph awareness and leaves
+  room for edges to carry their own metadata later without touching the
+  Note model. Graph rendering uses `@xyflow/react`, used with its default
+  behavior only (no custom node/edge types, layout algorithms, or
+  toolbar/minimap customization).
+- No DB / auth / AI SDK / CSS framework / state management library.
 
 ## Current Constraints
 
-- No product features are implemented yet — this repo is bootstrap-only
-  (Phase 0).
 - `specs/product.md` is the highest-priority source of truth; nothing here
   may contradict it.
-- No test runner (Vitest/Playwright) and no CI pipeline yet.
+- No persistence: application state is in-memory only and is lost on
+  reload.
 
 ## Deferred Decisions
 
@@ -33,6 +48,9 @@
   written.
 - Whether `next build` stays inside `pnpm run verify` long-term or moves to
   a CI-only step.
-- Test runner introduction (Vitest / Playwright), test file location/naming
-  convention, and CI pipeline.
-- Data model for "graph" (nodes/edges) — deferred to feature specs.
+- Edge metadata (label, type, weight, etc.) — the `Edge` type is designed
+  to allow this later, but nothing beyond `{ id, source, target }` is
+  implemented yet.
+- UI component testing (React Testing Library) and e2e testing
+  (Playwright) — introduce when a feature's UI behavior is complex enough
+  to warrant it.

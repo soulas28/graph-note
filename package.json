@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "verify": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run build"
+    "test": "vitest run",
+    "verify": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test && pnpm run build"
   },
   "dependencies": {
     "next": "16.3.4",
@@ -28,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "prettier": "^3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.0"
   }
 }
